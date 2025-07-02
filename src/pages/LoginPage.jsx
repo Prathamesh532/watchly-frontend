@@ -20,8 +20,8 @@ const Login = () => {
     dispatch(setCustomLoading(true));
     dispatch(userLogin(data)).then((res) => {
       console.log(res);
-      if(res.type.includes("fulfilled")){
-        navigate("/")
+      if (res.type.includes("fulfilled")) {
+        navigate("/");
       }
       dispatch(setCustomLoading(false));
       setPassword("");

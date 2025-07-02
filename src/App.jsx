@@ -20,34 +20,34 @@ function App() {
   const { pathname } = useLocation();
   const previousPath = useRef(pathname);
 
-  const { isTokenValid, shouldRefresh, refreshToken } = useTokenValidation();
+  // const { isTokenValid, shouldRefresh, refreshToken } = useTokenValidation();
 
-  const handleRefreshToken = async () => {
-    try {
-      dispatch(setCustomLoading(true));
-      dispatch(updateAccessToken(refreshToken)).then((res) => {
-        if (res.type.includes("fulfilled")) {
-          tokenService.resetRefreshRetries();
-          console.log("Token refreshed successfully");
-        } else throw new Error("Token refresh failed");
-      });
-    } catch (error) {
-      console.error("Token refresh error:", error);
-    } finally {
-      dispatch(setCustomLoading(false));
-    }
-  };
+  // const handleRefreshToken = async () => {
+  //   try {
+  //     dispatch(setCustomLoading(true));
+  //     dispatch(updateAccessToken(refreshToken)).then((res) => {
+  //       if (res.type.includes("fulfilled")) {
+  //         tokenService.resetRefreshRetries();
+  //         console.log("Token refreshed successfully");
+  //       } else throw new Error("Token refresh failed");
+  //     });
+  //   } catch (error) {
+  //     console.error("Token refresh error:", error);
+  //   } finally {
+  //     dispatch(setCustomLoading(false));
+  //   }
+  // };
 
-  useEffect(() => {
-    if (!isTokenValid) {
-      console.log("Token is invalid, forcing logout");
-      dispatch(userLogout());
-      navigate("/login");
-    } else if (shouldRefresh) {
-      console.log("Token needs refresh");
-      handleRefreshToken();
-    }
-  }, [isTokenValid, shouldRefresh, dispatch, navigate, refreshToken]);
+  // useEffect(() => {
+  //   if (!isTokenValid) {
+  //     console.log("Token is invalid, forcing logout");
+  //     dispatch(userLogout());
+  //     navigate("/login");
+  //   } else if (shouldRefresh) {
+  //     console.log("Token needs refresh");
+  //     handleRefreshToken();
+  //   }
+  // }, [isTokenValid, shouldRefresh, dispatch, navigate, refreshToken]);
 
   // Show loader during route changes
   // useEffect(() => {

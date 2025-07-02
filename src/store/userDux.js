@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import API from "../utils/httpService";
+import { tokenService } from "../utils/tokenService";
 
 const token = localStorage.getItem("accessToken");
 
@@ -269,20 +270,25 @@ export const userLogin = createAsyncThunk(
   async (data, thunkAPI) => {
     const url = "/users/login";
     try {
-      // const respose = await fetch(url, {
-      //   method: "POST",
-      //   credentials: "include",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(data),
-      // });
+      const response = await API.post(url, data);
 
-      // const user = await respose.json();
+      console.log("🔍 Login API Response:", response.data.data);
 
-      const user = await API.post(url, data);
+      // Extract only the data we need (serializable)
+      const { accessToken, refreshToken, user, ...otherData } =
+        response.data.data;
 
-      return user;
+      // Save tokens using tokenService
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      console.log("🔍 Tokens:", localStorage.getItem("accessToken"));
+      console.log("🔍 Tokens:", localStorage.getItem("refreshToken"));
+
+      console.log("✅ Tokens saved successfully");
+
+      // Return only serializable data for Redux store
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
